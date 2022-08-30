@@ -1,0 +1,10 @@
+{
+  "resolve": {
+    "alias": {
+      "components": "./src/components/",
+      "helpers": "./src/helpers/",
+      "styles": "./src/styles"
+    },
+    "extensions": [".ts", ".tsx"]
+  }
+}
