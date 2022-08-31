@@ -13,7 +13,6 @@ import {
 } from '@tanstack/react-table'
 import React, { useMemo, useState } from 'react'
 import { getCellType, getColumns } from './tokenTable.utils'
-import Icon from 'components/fragments/icon/icon'
 import TableCell from 'components/fragments/tableCell/tableCell'
 import TableFilter from 'components/fragments/tableFilter/tableFilter'
 import TokenTableFooter from './tokenTableFooter/tokenTableFooter'
@@ -99,17 +98,9 @@ const TokenTable: React.FC<Props> = ({
             .map(row => {
               return (
                 <tr key={row.id}>
-                  {row.getVisibleCells().map(cell => {
-                    return cell.column.id === 'logo'
-                      ? (
-                        <td className={style.cell} key={cell.id}>
-                          <Icon width={32} src={cell.getValue() as string} />
-                        </td>
-                        )
-                      : (
-                      <TableCell type={getCellType(cell.column.id)} className={style.cell} content={cell.getValue() as string | number} key={cell.id} />
-                        )
-                  })}
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell type={getCellType(cell.column.id)} className={style.cell} content={cell.getValue() as string | number} key={cell.id} />
+                  ))}
                 </tr>
               )
             })}

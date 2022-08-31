@@ -1,0 +1,9 @@
+@import "styles/_variables.scss";
+
+.select {
+  padding: 4px 8px;
+  color: $secondaryColor;
+  background-color: $primaryColor;
+  border: 1px solid $borderColor;
+  border-radius: 6px;
+}

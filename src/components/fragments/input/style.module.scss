@@ -1,0 +1,10 @@
+@import "styles/_variables.scss";
+
+.input {
+  padding: 4px 8px;
+  color: $secondaryColor;
+  background-color: $primaryColor;
+  border: 1px solid $borderColor;
+  border-radius: 6px;
+  min-height: 17px;
+}

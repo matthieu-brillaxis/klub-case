@@ -3,7 +3,9 @@
 .swap {
   display: flex;
   flex-direction: column;
-  margin: 20px 10%;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .loader {
@@ -15,4 +17,27 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  background-color: $secondaryColor;
+  border-radius: 32px;
+  width: 450px;
+  color: $primaryColor;
+}
+
+.cardTitle {
+  font-size: 22px;
+  text-align: center;
+}
+
+.value {
+  margin-left: 8px;
+}
+
+.firstSelect {
+  margin-right: 4px;
 }

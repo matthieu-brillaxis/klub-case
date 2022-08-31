@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
 import { Column, Table } from '@tanstack/react-table'
-import DebouncedInput from 'components/fragments/debouncedInput/debouncedInput'
+import DebouncedInput from 'components/fragments/input/debouncedInput/debouncedInput'
 import React from 'react'
 import { isNumber } from 'helpers/numbers'
 import style from './style.module.scss'

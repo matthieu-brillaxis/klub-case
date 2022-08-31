@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
+import { formatPrice, roundNumber } from 'helpers/numbers'
+import Input from 'components/fragments/input/input'
 import NavigationButton from 'components/fragments/navigationButton/navigationButton'
+import Select from 'components/fragments/select/select'
+import { getOptionsFromObject } from 'components/fragments/select/select.utils'
 import { getTokenList } from 'components/home/ressource'
 import style from './style.module.scss'
 import { useQuery } from 'react-query'
@@ -12,7 +16,7 @@ const Swap: React.FC = () => {
 
   const [firstToken, setFirstToken] = useState<Token | null>(null)
   const [firstTokenAmount, setFirstTokenAmount] = useState<string>('0')
-  const [secondSymbol, setSecondSymbol] = useState(null)
+  const [secondToken, setSecondToken] = useState<Token | null>(null)
 
   // @TODO: had a loader component
   if (isLoading) {
@@ -24,51 +28,45 @@ const Swap: React.FC = () => {
     return <p>Error while loading data</p>
   }
 
-  const handleTokenChange = (value: string): void => {
+  const handleFirstTokenChange = (value: string | null): void => {
     setFirstToken(tokens?.find(token => token.display === value) ?? null)
   }
 
-  console.log(firstToken, firstTokenAmount)
+  const handleSecondTokenChange = (value: string | null): void => {
+    setSecondToken(tokens?.find(token => token.display === value) ?? null)
+  }
+
+  const options = getOptionsFromObject({ options: tokens, labelKey: 'symbol', valueKey: 'display' })
 
   return (
-    <div className={style.home}>
-      <NavigationButton to="/" label="Back to home" />
-      <div>
-        <p>From</p>
-        <select
-          placeholder='from'
-          value={firstToken?.display}
-          onChange={e => handleTokenChange(e.target.value)}
-        >
-          <option value="">Please chose a token</option>
-          {tokens?.map(token => (
-            <option key={token.display} value={token.display}>
-              {token.symbol}
-            </option>
-          ))}
-        </select>
-        <input
-          value={firstTokenAmount}
-          type='number'
-          onChange={e => setFirstTokenAmount(e.target.value)}
-        />
-        {firstToken && firstTokenAmount && <p>{firstToken.price * parseInt(firstTokenAmount, 10)}</p>}
-      </div>
-
-      <div>
-        <p>To</p>
-        <select
-          placeholder='to'
-          value={firstToken?.display}
-          onChange={e => handleTokenChange(e.target.value)}
-        >
-          <option value="">Please chose a token</option>
-          {tokens?.map(token => (
-            <option key={token.display} value={token.display}>
-              {token.symbol}
-            </option>
-          ))}
-        </select>
+    <div className={style.swap}>
+      <div className={style.card}>
+        <NavigationButton to="/" label="Back to home" />
+        <h1 className={style.cardTitle}>Swap</h1>
+        <div>
+          <p>From</p>
+          <Select
+            className={style.firstSelect}
+            value={firstToken?.display ?? ''}
+            options={options}
+            onChange={value => handleFirstTokenChange(value)}
+          />
+          <Input
+            value={firstTokenAmount}
+            type='number'
+            onChange={e => setFirstTokenAmount(e.target.value)}
+          />
+          {firstToken && firstTokenAmount && <span className={style.value}>= {formatPrice(firstToken.price * parseInt(firstTokenAmount, 10))}</span>}
+        </div>
+        <div>
+          <p>To</p>
+          <Select
+            value={secondToken?.display ?? ''}
+            options={options}
+            onChange={value => handleSecondTokenChange(value)}
+          />
+          {firstToken && secondToken && firstTokenAmount && <span className={style.value}>= {roundNumber(firstToken.price * parseInt(firstTokenAmount, 10) / secondToken.price)} {secondToken.display}</span>}
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,9 @@
+import Input from 'components/fragments/input/input'
 import React from 'react'
+import Select from 'components/fragments/select/select'
 import { Table } from '@tanstack/react-table'
 import classNames from 'classnames'
+import { getOptionsFromArray } from 'components/fragments/select/select.utils'
 import style from './style.module.scss'
 
 interface Props {
@@ -12,6 +15,8 @@ const TokenTableFooter: React.FC<Props> = ({
   table,
   className
 }) => {
+  const selectOptions = getOptionsFromArray<number>({ options: [10, 20, 30, 40, 50] })
+
   return (
     <div className={classNames(style.footer, className)}>
       <div className={style.content}>
@@ -52,9 +57,10 @@ const TokenTableFooter: React.FC<Props> = ({
         </div>
         <span className={style.goTo}>
           Go to page
-          <input
+          <Input
             className={style.inputText}
             type="number"
+            max={table.getPageCount()}
             defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={e => {
               const page = (e.target.value.length > 0) ? Number(e.target.value) - 1 : 0
@@ -62,19 +68,18 @@ const TokenTableFooter: React.FC<Props> = ({
             }}
           />
         </span>
-        <select
+        <Select
           className={style.select}
           value={table.getState().pagination.pageSize}
-          onChange={e => {
-            table.setPageSize(Number(e.target.value))
+          onChange={value => {
+            if (value) {
+              table.setPageSize(value as number)
+            } else {
+              table.setPageSize(0)
+            }
           }}
-        >
-          {[10, 20, 30, 40, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+          options={selectOptions}
+        />
         <div className={style.numberOfRow}>{table.getPrePaginationRowModel().rows.length} Rows</div>
       </div>
     </div>

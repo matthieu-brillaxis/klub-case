@@ -1,32 +1,40 @@
 import React from 'react'
+import classnames from 'classnames'
+import style from './style.module.scss'
 
-type OptionValue = string | number
+export type OptionValue = string | number
 
-interface Option<T extends OptionValue> {
+export interface Option<T extends OptionValue> {
   value: T
   label: string
 }
 
 interface Props<T extends OptionValue> {
-  options: Array<Option<T>>
   value: T
-  onChange: (value: T) => void
+  options: Array<Option<T>>
+  onChange: (value: T | null) => void
+  className?: string
 }
 
-function Select = ({
+function Select<T extends OptionValue> ({
   options,
-  value, 
-  onChange
-}: Props<T>) => {
+  value,
+  onChange,
+  className
+}: Props<T>): JSX.Element {
   return (
     <select
-      value={firstToken?.display}
-      onChange={e => handleTokenChange(e.target.value)}
+      className={classnames(style.select, className)}
+      value={value}
+      onChange={e => {
+        const selectedOption = options.find(option => option.value === e.currentTarget.value)
+        onChange(selectedOption?.value ?? null)
+      }}
     >
-      <option value="">Please chose a token</option>
-      {tokens?.map(token => (
-        <option key={token.display} value={token.display}>
-          {token.symbol}
+      <option value="">Please chose an option</option>
+      {options.map(option => (
+        <option key={option.value} value={option.value}>
+          {option.label}
         </option>
       ))}
     </select>

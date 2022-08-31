@@ -23,7 +23,7 @@ const Home: React.FC = () => {
 
   return (
     <div className={style.home}>
-      <NavigationButton to="/" label="Go to swap" />
+      <NavigationButton to="/swap" label="Go to swap" />
       <TokenTable tokens={tokens} />
     </div>
   )

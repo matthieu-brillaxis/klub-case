@@ -12,11 +12,11 @@ interface Props {
 const TableCell: React.FC<Props> = ({ className, content, type }) => {
   const getValue = (): string | number => {
     if (type === 'price' && isNumber(content)) {
-      return formatPrice(content as number)
+      return formatPrice(content)
     }
 
     if (type === 'percent' && isNumber(content)) {
-      return `${roundNumber(content as number)} %`
+      return `${roundNumber(content)} %`
     }
 
     return content as string
