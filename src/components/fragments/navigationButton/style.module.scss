@@ -1,0 +1,19 @@
+@import "styles/_variables.scss";
+
+.link {
+  color: $secondaryColor;
+  background-color: $primaryColor;
+  text-decoration: none;
+  padding: 8px 4px;
+  border: 1px solid $secondaryColor;
+  border-radius: 8px;
+  width: 120px;
+  text-align: center;
+  align-self: flex-end;
+
+  &:hover {
+    color: $primaryColor;
+    background-color: $secondaryColor;
+    border-color: $primaryColor;
+  }
+}

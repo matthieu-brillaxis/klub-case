@@ -1,21 +1,23 @@
-import React, { useMemo, useState } from 'react'
 import {
+  ColumnFiltersState,
+  SortingState,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  getPaginationRowModel,
-  getFilteredRowModel,
+  getFacetedMinMaxValues,
   getFacetedRowModel,
   getFacetedUniqueValues,
-  getFacetedMinMaxValues,
-  ColumnFiltersState
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable
 } from '@tanstack/react-table'
-import { getColumns } from './tokenTable.utils'
+import React, { useMemo, useState } from 'react'
+import { getCellType, getColumns } from './tokenTable.utils'
+import Icon from 'components/fragments/icon/icon'
+import TableCell from 'components/fragments/tableCell/tableCell'
 import TableFilter from 'components/fragments/tableFilter/tableFilter'
 import TokenTableFooter from './tokenTableFooter/tokenTableFooter'
-import Icon from 'components/fragments/icon/icon'
+import style from './style.module.scss'
 
 interface Props {
   tokens: Token[]
@@ -49,25 +51,21 @@ const TokenTable: React.FC<Props> = ({
   })
 
   return (
-    <div>
-      <table>
+    <div className={style.container}>
+      <table className={style.table}>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => {
                 return (
                   <th key={header.id} colSpan={header.colSpan}>
+                    <div className={style.headerCellContent}>
                     {header.isPlaceholder
                       ? null
                       : (
                         <>
                       <div
-                        {...{
-                          className: header.column.getCanSort()
-                            ? 'cursor-pointer select-none'
-                            : '',
-                          onClick: header.column.getToggleSortingHandler()
-                        }}
+                        onClick={header.column.getToggleSortingHandler}
                       >
                         {flexRender(
                           header.column.columnDef.header,
@@ -79,16 +77,15 @@ const TokenTable: React.FC<Props> = ({
                         }[header.column.getIsSorted() as string] ?? null}
                             </div>
                             <div>
-                              {header.column.getCanFilter()
-                                ? (
+                              {header.column.getCanFilter() && (
                                 <div>
                                   <TableFilter column={header.column} table={table} />
                                 </div>
-                                  )
-                                : null}
+                              )}
                             </div>
                             </>
                         )}
+                        </div>
                   </th>
                 )
               })}
@@ -105,16 +102,12 @@ const TokenTable: React.FC<Props> = ({
                   {row.getVisibleCells().map(cell => {
                     return cell.column.id === 'logo'
                       ? (
-                        <Icon key={cell.id} width={32} src={cell.getValue() as string} />
+                        <td className={style.cell} key={cell.id}>
+                          <Icon width={32} src={cell.getValue() as string} />
+                        </td>
                         )
                       : (
-
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
+                      <TableCell type={getCellType(cell.column.id)} className={style.cell} content={cell.getValue() as string | number} key={cell.id} />
                         )
                   })}
                 </tr>
@@ -122,7 +115,7 @@ const TokenTable: React.FC<Props> = ({
             })}
         </tbody>
       </table>
-      <TokenTableFooter table={table} />
+      <TokenTableFooter className={style.tableFooter} table={table} />
     </div>
   )
 }

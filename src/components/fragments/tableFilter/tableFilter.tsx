@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
-import React from 'react'
-import DebouncedInput from 'components/fragments/debouncedInput/debouncedInput'
 import { Column, Table } from '@tanstack/react-table'
-
+import DebouncedInput from 'components/fragments/debouncedInput/debouncedInput'
+import React from 'react'
+import { isNumber } from 'helpers/numbers'
+import style from './style.module.scss'
 interface Props {
   column: Column<any, unknown>
   table: Table<any>
@@ -20,16 +21,15 @@ const TableFilter: React.FC<Props> = ({
 
   const sortedUniqueValues = React.useMemo(
     () =>
-      typeof firstValue === 'number'
+      isNumber(firstValue)
         ? []
         : Array.from(column.getFacetedUniqueValues().keys()).sort(),
     [column.getFacetedUniqueValues()]
   )
 
-  return typeof firstValue === 'number'
+  return isNumber(firstValue)
     ? (
-    <div>
-      <div className="flex space-x-2">
+      <div className={style.inputNumberContainer}>
         <DebouncedInput
           type="number"
           min={Number(column.getFacetedMinMaxValues()?.[0] ?? '')}
@@ -51,25 +51,23 @@ const TableFilter: React.FC<Props> = ({
           placeholder="Max"
         />
       </div>
-    </div>
       )
     : (
-      <>
+      <div className={style.inputListContainer}>
         <datalist id={column.id + 'list'}>
           {sortedUniqueValues.slice(0, 5000).map((value: any) => (
             <option value={value} key={value} />
           ))}
         </datalist>
         <DebouncedInput
+          className={style.inputText}
           type="text"
           value={(columnFilterValue ?? '') as string}
           onChange={value => column.setFilterValue(value)}
           placeholder={`Search... (${column.getFacetedUniqueValues().size})`}
-          className="w-36 border shadow rounded"
           list={column.id + 'list'}
         />
-        <div className="h-1" />
-      </>
+      </div>
       )
 }
 

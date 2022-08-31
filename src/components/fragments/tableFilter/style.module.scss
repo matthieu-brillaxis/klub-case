@@ -1,0 +1,14 @@
+@import "styles/_variables";
+
+.inputNumberContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputListContainer {
+  display: flex;
+}
+
+.inputText {
+  flex: 1;
+}

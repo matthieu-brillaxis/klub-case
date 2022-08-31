@@ -1,0 +1,49 @@
+@import "styles/_variables.scss";
+
+.footer {
+  color: $primaryColor;
+  width: 400px;
+  margin: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pageNumber {
+  width: 60px;
+}
+
+.pageButton {
+  width: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid grey;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.inputText {
+  width: 80px;
+}
+
+.goTo {
+  margin-right: 8px;
+  width: 100px;
+}
+
+.numberOfRow {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+}
+
+.select {
+  width: 80px;
+  margin-right: 8px;
+}

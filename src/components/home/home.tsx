@@ -1,7 +1,9 @@
+import NavigationButton from 'components/fragments/navigationButton/navigationButton'
 import React from 'react'
+import TokenTable from 'components/home/tokenTable/tokenTable'
+import { getTokenList } from 'components/home/ressource'
+import style from './style.module.scss'
 import { useQuery } from 'react-query'
-import { getTokenList } from './ressource'
-import TokenTable from './tokenTable/tokenTable'
 
 const Home: React.FC = () => {
   const { data: tokens, isLoading } = useQuery<Token[]>(
@@ -9,15 +11,22 @@ const Home: React.FC = () => {
     getTokenList
   )
 
-  if (tokens === undefined || isLoading) {
-    return <p>Loading ...</p>
+  // @TODO: had a loader component
+  if (isLoading) {
+    return <p className={style.loader}>...</p>
   }
 
-  console.log(tokens)
+  // @TODO: had an error handler component
+  if (tokens === undefined) {
+    return <p>Error while loading data</p>
+  }
 
-  return (<div>
-    <TokenTable tokens={tokens} />
-    </div>)
+  return (
+    <div className={style.home}>
+      <NavigationButton to="/" label="Go to swap" />
+      <TokenTable tokens={tokens} />
+    </div>
+  )
 }
 
 Home.displayName = 'Home'

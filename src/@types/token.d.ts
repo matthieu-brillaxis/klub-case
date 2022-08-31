@@ -12,3 +12,5 @@ declare interface Token {
   volume_24h: number
   volume_24h_change: number
 }
+
+declare type CellType = 'price' | 'string' | 'percent'

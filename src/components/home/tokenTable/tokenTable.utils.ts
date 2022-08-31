@@ -5,13 +5,8 @@ import {
 const getColumns = (): Array<ColumnDef<Token, any>> => {
   return [
     {
-      id: 'logo',
-      header: '',
-      accessorFn: (token: Token) => `https://app.osmosis.zone/_next/image?url=%2Ftokens%2F${token.symbol.toLowerCase()}.svg&w=32&q=75`
-    },
-    {
       header: 'Token',
-      accessorFn: (token: Token) => token.display
+      accessorFn: (token: Token) => `${token.name} (${token.symbol})`
     },
     {
       header: 'Liquidity',
@@ -36,6 +31,19 @@ const getColumns = (): Array<ColumnDef<Token, any>> => {
   ]
 }
 
+const getCellType = (colId: string): CellType => {
+  if (['Price', 'Liquidity', 'Volume 24h'].includes(colId)) {
+    return 'price'
+  }
+
+  if (['Volume 24h change', 'Price 24h change'].includes(colId)) {
+    return 'percent'
+  }
+
+  return 'string'
+}
+
 export {
-  getColumns
+  getColumns,
+  getCellType
 }

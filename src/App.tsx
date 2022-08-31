@@ -1,12 +1,13 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Home from 'components/home/home'
+import React from 'react'
+import Swap from 'components/swap/swap'
 
 const client = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 60 * 24 // 24 hours
+      staleTime: 6000
     }
   }
 })
@@ -16,8 +17,12 @@ const App: React.FC = () => {
     <BrowserRouter>
       <QueryClientProvider client={client}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/swap" element={<div>swap</div>} />
+          <Route index element={<Home />} />
+          <Route path="/swap" element={<Swap />} />
+          <Route
+            path="*"
+            element={<Navigate to="/" replace />}
+          />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>

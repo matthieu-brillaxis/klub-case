@@ -1,0 +1,18 @@
+@import "styles/_variables.scss";
+
+.swap {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 10%;
+}
+
+.loader {
+  color: $primaryColor;
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
